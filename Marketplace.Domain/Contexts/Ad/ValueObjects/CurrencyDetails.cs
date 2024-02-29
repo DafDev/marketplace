@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Marketplace.Domain.Contexts.Ad.Value_Objects;
-internal class CurrencyDetails
+﻿namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
+public record CurrencyDetails(string CurrencyCode, bool InUse, int DecimalPlaces)
 {
+    public static CurrencyDetails None => new(string.Empty, false, default);
 }

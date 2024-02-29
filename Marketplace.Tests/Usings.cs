@@ -1,2 +1,2 @@
 global using Xunit;
-global using Marketplace.Domain;
+global using FluentAssertions;

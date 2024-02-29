@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+﻿using Marketplace.Domain.Contexts.Ad.ValueObjects;
 
-namespace Marketplace.Tests;
+namespace Marketplace.Tests.Contexts.Ad.ValueObjects;
 public class ClassifiedAdTitleTests
 {
     [Theory]

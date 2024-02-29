@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Marketplace.Domain;
+namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
 public record ClassifiedAdTitle
 {
     public readonly string Title;

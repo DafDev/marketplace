@@ -1,5 +1,7 @@
 ﻿
-namespace Marketplace.Domain;
+using Marketplace.Domain.Contexts.Ad.ValueObjects;
+
+namespace Marketplace.Domain.Contexts.Ad.DataModels;
 
 public class ClassifiedAd(ClassifiedAdId id, UserId ownerId)
 {
