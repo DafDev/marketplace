@@ -138,5 +138,16 @@ public class MoneyTests
         action.Should().Throw<ArgumentNullException>().WithMessage("Currency must be specified (Parameter 'currencyCode')");
     }
 
+    [Fact]
+    public void GivenNegativePriceWhenInstatiateShouldThrowException()
+    {
+        // Given & When
+        var action = () => Money.FromDecimal(-5, "EUR", new FakeCurrencyLookup());
+
+        //Should
+        action.Should()
+            .Throw<ArgumentException>()
+            .WithMessage("The price cannot be negative (Parameter 'amount')");
+    }
 
 }

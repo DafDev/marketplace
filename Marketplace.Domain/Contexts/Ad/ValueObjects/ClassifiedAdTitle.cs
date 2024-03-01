@@ -3,7 +3,7 @@
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
 public record ClassifiedAdTitle
 {
-    public readonly string Title;
+    public string Title { get; init; }
     public static ClassifiedAdTitle FromString(string title) => new(title);
     public static ClassifiedAdTitle FromHtml(string htmlTitle)
     {

@@ -2,10 +2,10 @@
 using Marketplace.Domain.Contexts.Ad.Exceptions;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
-public record Money
+public record class Money
 {
-    public readonly decimal Amount;
-    public readonly CurrencyDetails Currency;
+    public decimal Amount { get; init; }
+    public CurrencyDetails Currency { get; init; }
 
     #region FACTORIES
     public static Money FromDecimal(decimal amount, string currency, ICurrencyLookup currencyLookup) => new(amount, currency, currencyLookup);
@@ -17,6 +17,9 @@ public record Money
     {
         if (string.IsNullOrWhiteSpace(currencyCode))
             throw new ArgumentNullException(nameof(currencyCode), "Currency must be specified");
+
+        if (amount < 0)
+            throw new ArgumentException("The price cannot be negative", nameof(amount));
 
         CurrencyDetails currencyDetails = currencyLookup.FindCurrency(currencyCode);
 
