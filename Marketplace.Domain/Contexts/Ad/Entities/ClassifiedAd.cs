@@ -1,10 +1,11 @@
 ﻿
+using Marketplace.Domain.Contexts.Ad.Events;
 using Marketplace.Domain.Contexts.Ad.Exceptions;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
 
 namespace Marketplace.Domain.Contexts.Ad.Entities;
 
-public class ClassifiedAd
+public class ClassifiedAd : Entity
 {
     public UserId OwnerId { get; }
     public ClassifiedAdId Id { get; }
@@ -20,33 +21,38 @@ public class ClassifiedAd
         Id = id;
         State = ClassifiedAdState.Inactive;
         EnsureValidState();
+        DomainEvents.Add(new ClassifiedAdCreatedEvent(Id.Value, OwnerId.Value));
     }
 
     public void SetTitle(ClassifiedAdTitle title)
     {
         Title = title;
         EnsureValidState();
+        DomainEvents.Add(new ClassifiedAdTitleChangedEvent(Id.Value, Title.Title));
     }
 
     public void UpdateText(ClassifiedAdText text)
     {
         Text = text;
         EnsureValidState();
+        DomainEvents.Add(new ClassifiedAdTextUpdatedEvent(Id.Value, Text.Value));
     }
 
     public void UpdatePrice(Money price)
     {
         Price = price;
         EnsureValidState();
+        DomainEvents.Add(new ClassifiedAdPriceUpdatedEvent(Id.Value, Price.Amount, Price.Currency.CurrencyCode));
     }
 
     public void RequestToPublish()
     {
         State = ClassifiedAdState.PendingReview;
         EnsureValidState();
+        DomainEvents.Add(new ClassifiedAdSentForReviewEvent(Id.Value));
     }
 
-    protected void EnsureValidState()
+    protected override void EnsureValidState()
     {
         var isValid = Id is not null
              && OwnerId is not null
@@ -64,5 +70,10 @@ public class ClassifiedAd
 
         if (!isValid)
             throw new InvalidEntityStateException(this, $"Post-checks failed in state {State}");
+    }
+
+    protected override void OnDomainEventRaised(DomainEvent domainEvent)
+    {
+        throw new NotImplementedException();
     }
 }
