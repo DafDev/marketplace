@@ -1,5 +1,4 @@
-﻿
-using Marketplace.Domain.Contexts.Ad.Events;
+﻿using Marketplace.Domain.Contexts.Ad.Events;
 using Marketplace.Domain.Contexts.Ad.Exceptions;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
 
@@ -7,50 +6,23 @@ namespace Marketplace.Domain.Contexts.Ad.Entities;
 
 public class ClassifiedAd : Entity
 {
-    public UserId OwnerId { get; }
-    public ClassifiedAdId Id { get; }
+    public UserId OwnerId { get; private set; }
+    public ClassifiedAdId Id { get; private set; }
     public ClassifiedAdTitle Title { get; private set; }
     public ClassifiedAdText Text { get; private set; }
     public Money Price { get; private set; }
     public UserId ApprovedBy { get; private set; }
     public ClassifiedAdState State { get; private set; }
 
-    public ClassifiedAd(UserId ownerId, ClassifiedAdId id)
-    {
-        OwnerId = ownerId;
-        Id = id;
-        State = ClassifiedAdState.Inactive;
-        EnsureValidState();
-        DomainEvents.Add(new ClassifiedAdCreatedEvent(Id.Value, OwnerId.Value));
-    }
+    public ClassifiedAd(UserId ownerId, ClassifiedAdId id) => Apply(new ClassifiedAdCreatedEvent(id, ownerId));
 
-    public void SetTitle(ClassifiedAdTitle title)
-    {
-        Title = title;
-        EnsureValidState();
-        DomainEvents.Add(new ClassifiedAdTitleChangedEvent(Id.Value, Title.Title));
-    }
+    public void SetTitle(ClassifiedAdTitle title) => Apply(new ClassifiedAdTitleChangedEvent(Id, title));
 
-    public void UpdateText(ClassifiedAdText text)
-    {
-        Text = text;
-        EnsureValidState();
-        DomainEvents.Add(new ClassifiedAdTextUpdatedEvent(Id.Value, Text.Value));
-    }
+    public void UpdateText(ClassifiedAdText text) => Apply(new ClassifiedAdTextUpdatedEvent(Id, text));
 
-    public void UpdatePrice(Money price)
-    {
-        Price = price;
-        EnsureValidState();
-        DomainEvents.Add(new ClassifiedAdPriceUpdatedEvent(Id.Value, Price.Amount, Price.Currency.CurrencyCode));
-    }
+    public void UpdatePrice(Money price) => Apply(new ClassifiedAdPriceUpdatedEvent(Id, price.Amount, price.Currency.CurrencyCode, price.Currency.DecimalPlaces, price.Currency.InUse));
 
-    public void RequestToPublish()
-    {
-        State = ClassifiedAdState.PendingReview;
-        EnsureValidState();
-        DomainEvents.Add(new ClassifiedAdSentForReviewEvent(Id.Value));
-    }
+    public void RequestToPublish() => Apply(new ClassifiedAdSentForReviewEvent(Id));
 
     protected override void EnsureValidState()
     {
@@ -74,6 +46,31 @@ public class ClassifiedAd : Entity
 
     protected override void OnDomainEventRaised(DomainEvent domainEvent)
     {
-        throw new NotImplementedException();
+        switch (domainEvent)
+        {
+            case ClassifiedAdCreatedEvent @event:
+                OwnerId = new(@event.OwnerId);
+                Id = new(@event.Id);
+                State = ClassifiedAdState.Inactive;
+                break;
+            case ClassifiedAdPriceUpdatedEvent @event:
+                Id = new(@event.Id);
+                Price = new(@event.Price, @event.CurrencyCode, @event.InUse, @event.DecimalPlaces);
+                break;
+            case ClassifiedAdTextUpdatedEvent @event:
+                Id = new(@event.Id);
+                Text = new(@event.AdText);
+                break;
+            case ClassifiedAdTitleChangedEvent @event:
+                Id = new(@event.Id);
+                Title = new(@event.Title);
+                break;
+            case ClassifiedAdSentForReviewEvent @event:
+                Id = new(@event.Id);
+                State = ClassifiedAdState.PendingReview;
+                break;
+            default:
+                break;
+        }
     }
 }

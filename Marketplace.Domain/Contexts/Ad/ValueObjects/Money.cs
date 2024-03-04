@@ -33,6 +33,12 @@ public record class Money
         Currency = currencyDetails;
     }
 
+    internal Money(decimal amount, string currencyCode, bool inUse, int decimalPlaces)
+    {
+        Amount = amount;
+        Currency = new(currencyCode, inUse, decimalPlaces);
+    }
+
     private Money(decimal amount, CurrencyDetails currency)
     {
         Amount = amount;

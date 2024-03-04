@@ -16,12 +16,14 @@ public record ClassifiedAdText
         return new (Regex.Replace(replacedTitle, "<.*?>", string.Empty));
     }
 
-    protected ClassifiedAdText(string value)
+    internal ClassifiedAdText(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentNullException(nameof(value));
 
         Value = value;
     }
+
+    public static implicit operator string(ClassifiedAdText self) => self.Value;
 
 }
