@@ -10,7 +10,7 @@ public class ClassifiedAdTests
     private readonly ICurrencyLookup _currencyLookup = new FakeCurrencyLookup();
     private readonly ClassifiedAd _classifiedAd;
 
-    public ClassifiedAdTests() => _classifiedAd = new(ownerId: new(Guid.NewGuid()), id: new(Guid.NewGuid()));
+    public ClassifiedAdTests() => _classifiedAd = new(id: new(Guid.NewGuid()), ownerId: new(Guid.NewGuid()));
 
     [Fact]
     public void GivenValidStateWhenRequestPublishShouldReturnStatePendingReview()

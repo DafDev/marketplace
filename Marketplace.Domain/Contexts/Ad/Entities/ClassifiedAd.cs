@@ -14,7 +14,7 @@ public class ClassifiedAd : Entity
     public UserId ApprovedBy { get; private set; }
     public ClassifiedAdState State { get; private set; }
 
-    public ClassifiedAd(UserId ownerId, ClassifiedAdId id) => Apply(new ClassifiedAdCreatedEvent(id, ownerId));
+    public ClassifiedAd(ClassifiedAdId id, UserId ownerId) => Apply(new ClassifiedAdCreatedEvent(id, ownerId));
 
     public void SetTitle(ClassifiedAdTitle title) => Apply(new ClassifiedAdTitleChangedEvent(Id, title));
 
