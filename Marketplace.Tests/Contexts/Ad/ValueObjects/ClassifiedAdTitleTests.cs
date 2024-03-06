@@ -23,7 +23,7 @@ public class ClassifiedAdTitleTests
         //When
         var action = () => ClassifiedAdTitle.FromString(title);
         //Should
-        action.Should().Throw<ArgumentException>().WithMessage("Title is bigger than a 100 characters.");
+        action.Should().Throw<ArgumentException>();
     }
 
     [Fact]

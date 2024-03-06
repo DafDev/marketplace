@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Marketplace.Framework;
 
@@ -32,13 +31,13 @@ public class ValidatorBuilder
         if (property.CompareTo(max) > 0) _exceptions.Add(new ArgumentOutOfRangeException(propertyName, $"Can't have more than {max} items"));
         return this;
     }
-    public ValidatorBuilder LessThan<P>(P property, P min, [CallerArgumentExpression(nameof(property))] string? propertyName = default) where P : IComparable<P>
+    public ValidatorBuilder NotLessThan<P>(P property, P min, [CallerArgumentExpression(nameof(property))] string? propertyName = default) where P : IComparable<P>
     {
         if (property.CompareTo(min) < 0) _exceptions.Add(new ArgumentOutOfRangeException(propertyName, $"Can't have less than {min} items"));
         return this;
     }
 
-    public ValidatorBuilder GreaterThan<P>(P property, P max, [CallerArgumentExpression(nameof(property))] string? propertyName = default) where P : IComparable<P>
+    public ValidatorBuilder NotGreaterThan<P>(P property, P max, [CallerArgumentExpression(nameof(property))] string? propertyName = default) where P : IComparable<P>
     {
         if (property.CompareTo(max) > 0) _exceptions.Add(new ArgumentOutOfRangeException(propertyName, $"Can't have more than {max} items"));
         return this;

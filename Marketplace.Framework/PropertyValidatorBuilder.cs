@@ -21,6 +21,7 @@ public class PropertyValidatorBuilder<T> : ValidatorBuilder
     {
         if (Property == null)
             _exceptions.Add(new ArgumentNullException(PropertyName));
+        
         return this;
     }
     public PropertyValidatorBuilder<T> IsOneOf(IEnumerable<T> options)
@@ -29,9 +30,9 @@ public class PropertyValidatorBuilder<T> : ValidatorBuilder
         return this;
     }
 
-    internal void Add(ArgumentOutOfRangeException argumentOutOfRangeException)
+    internal void Add(Exception exception)
     {
-        _exceptions.Add(argumentOutOfRangeException);
+        _exceptions.Add(exception);
     }
 }
 

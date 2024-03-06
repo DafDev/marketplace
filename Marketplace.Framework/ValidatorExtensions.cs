@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Marketplace.Framework;
 public static class ValidatorExtensions
@@ -13,6 +14,16 @@ public static class ValidatorExtensions
         if (value.Property.Length > max) value.Add(new ArgumentOutOfRangeException(value.PropertyName, $"Can't have more than {max} items"));
         return value;
     }
+
+    public static PropertyValidatorBuilder<P> NotNull<P>(this PropertyValidatorBuilder<P> value)
+    {
+        if (value.Property == null
+            || typeof(P) == typeof(string) && string.IsNullOrWhiteSpace(value.Property?.ToString()))
+            value.Add(new ArgumentNullException(value.PropertyName));
+
+        return value;
+    }
+
     public static PropertyValidatorBuilder<string> IsHex(this PropertyValidatorBuilder<string> value)
     {
         if (string.IsNullOrEmpty(value.Property)) throw new ArgumentOutOfRangeException(value.PropertyName, "Hex String Empty");
@@ -26,6 +37,13 @@ public static class ValidatorExtensions
         }
         return value;
     }
+
+    public static PropertyValidatorBuilder<string> NotWhiteSpace(this PropertyValidatorBuilder<string> value)
+    {
+        if (string.IsNullOrWhiteSpace(value.Property)) throw new ArgumentNullException(value.PropertyName);
+        return value;
+    }
+
     public static PropertyValidatorBuilder<P> RangeWithin<P>(this PropertyValidatorBuilder<P> value, P min, P max) where P : IComparable<P>
     {
         if (value.Property.CompareTo(min) < 0) value.Add(new ArgumentOutOfRangeException(value.PropertyName, $"Can't have less than {min} items"));
@@ -33,13 +51,13 @@ public static class ValidatorExtensions
         return value;
     }
 
-    public static PropertyValidatorBuilder<P> LessThan<P>(this PropertyValidatorBuilder<P> value, P min) where P : IComparable<P>
+    public static PropertyValidatorBuilder<P> NotLessThan<P>(this PropertyValidatorBuilder<P> value, P min) where P : IComparable<P>
     {
         if (value.Property.CompareTo(min) < 0) value.Add(new ArgumentOutOfRangeException(value.PropertyName, $"Can't have less than {min} items"));
         return value;
     }
 
-    public static PropertyValidatorBuilder<P> GreaterThan<P>(this PropertyValidatorBuilder<P> value, P max) where P : IComparable<P>
+    public static PropertyValidatorBuilder<P> NotGreaterThan<P>(this PropertyValidatorBuilder<P> value, P max) where P : IComparable<P>
     {
         if (value.Property.CompareTo(max) > 0) value.Add(new ArgumentOutOfRangeException(value.PropertyName, $"Can't have more than {max} items"));
         return value;

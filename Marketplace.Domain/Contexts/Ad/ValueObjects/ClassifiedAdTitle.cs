@@ -1,14 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using Marketplace.Framework;
+using System.Text.RegularExpressions;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
-public record ClassifiedAdTitle
+public record ClassifiedAdTitle(string Title)
 {
-    public string Title { get; init; }
-    public static ClassifiedAdTitle FromString(string title)
-    {
-        CheckValidity(title);
-        return new(title);
-    }
+    public static ClassifiedAdTitle FromString(string title) => new(title);
 
     public static ClassifiedAdTitle FromHtml(string htmlTitle)
     {
@@ -19,11 +15,8 @@ public record ClassifiedAdTitle
             .Replace("</b>", "**");
 
         var cleanedTitle = Regex.Replace(replacedTitle, "<.*?>", string.Empty);
-        CheckValidity(cleanedTitle);
         return new(cleanedTitle);
     }
-
-    internal ClassifiedAdTitle(string title) => Title = title;
 
     private static void CheckValidity(string title)
     {
@@ -32,6 +25,10 @@ public record ClassifiedAdTitle
         if (title.Length > 100)
             throw new ArgumentException("Title is bigger than a 100 characters.");
     }
+
+    private readonly bool _isValid = new ValidatorBuilder()
+        .For(Title).NotNull().NotWhiteSpace().LengthBetween(0,100)
+        .IsValid();
 
     public static implicit operator string(ClassifiedAdTitle self) => self.Title;
 }
