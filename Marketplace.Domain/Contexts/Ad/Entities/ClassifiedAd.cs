@@ -1,10 +1,11 @@
 ﻿using Marketplace.Domain.Contexts.Ad.Events;
 using Marketplace.Domain.Contexts.Ad.Exceptions;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
+using Marketplace.Framework.Persistence;
 
 namespace Marketplace.Domain.Contexts.Ad.Entities;
 
-public class ClassifiedAd : Entity, IAggregateRoot
+public class ClassifiedAd : AggregateRoot, IAggregateRoot
 {
     public UserId OwnerId { get; private set; }
     public ClassifiedAdId Id { get; private set; }
@@ -13,7 +14,7 @@ public class ClassifiedAd : Entity, IAggregateRoot
     public Money Price { get; private set; }
     public UserId ApprovedBy { get; private set; }
     public ClassifiedAdState State { get; private set; }
-
+    public List<Picture> Pictures { get; private set; } = [];
     public string AggregateId => "Ad_"+ Id.ToString();
 
     public ClassifiedAd(ClassifiedAdId id, UserId ownerId) => Apply(new ClassifiedAdCreatedEvent(id, ownerId));
@@ -26,7 +27,8 @@ public class ClassifiedAd : Entity, IAggregateRoot
 
     public void RequestToPublish() => Apply(new ClassifiedAdSentForReviewEvent(Id));
 
-    public void AddPicture(Uri pictureUri, PictureSize pictureSize) => Apply(new PictureAddedToClassifiedAdEvent(Id, Guid.NewGuid(),pictureUri.ToString(), pictureSize.Height, pictureSize.Width)); 
+    public void AddPicture(Uri pictureUri, PictureSize pictureSize) 
+        => Apply(new PictureAddedToClassifiedAdEvent(Id, Guid.NewGuid(),pictureUri.ToString(), pictureSize.Height, pictureSize.Width, Pictures.Max(x => x.Order) + 1)); 
 
     protected override void EnsureValidState()
     {
@@ -74,6 +76,9 @@ public class ClassifiedAd : Entity, IAggregateRoot
                 State = ClassifiedAdState.PendingReview;
                 break;
             case PictureAddedToClassifiedAdEvent @event:
+                Picture picture = new(Apply);
+                ApplyToEntity(picture, @event);
+                Pictures.Add(picture);
                 break;
             default:
                 break;

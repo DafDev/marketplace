@@ -1,4 +1,4 @@
-﻿using Marketplace.Framework;
+﻿using Marketplace.Framework.Validation;
 using System.Text.RegularExpressions;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
@@ -18,17 +18,16 @@ public record ClassifiedAdTitle(string Title)
         return new(cleanedTitle);
     }
 
-    private static void CheckValidity(string title)
-    {
-        if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentNullException(nameof(title));
-        if (title.Length > 100)
-            throw new ArgumentException("Title is bigger than a 100 characters.");
-    }
-
+    //To Do put this in a result function to check validity at instanciatiing
+    // but not when retrieving from the database.
+    /*
+     * public Result<bool> IsValid => new VailidatorBuilder....
+     * after persistence is done
+     */
     private readonly bool _isValid = new ValidatorBuilder()
         .For(Title).NotNull().NotWhiteSpace().LengthBetween(0,100)
         .IsValid();
 
+    
     public static implicit operator string(ClassifiedAdTitle self) => self.Title;
 }

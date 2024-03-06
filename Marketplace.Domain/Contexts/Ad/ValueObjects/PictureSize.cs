@@ -1,4 +1,4 @@
-﻿using Marketplace.Framework;
+﻿using Marketplace.Framework.Validation;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
 public record PictureSize(double Height, double Width)

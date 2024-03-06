@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Marketplace.Framework;
+namespace Marketplace.Framework.Validation;
 public class PropertyValidatorBuilder<T> : ValidatorBuilder
 {
     internal string? PropertyName { get; init; }
@@ -21,7 +21,7 @@ public class PropertyValidatorBuilder<T> : ValidatorBuilder
     {
         if (Property == null)
             _exceptions.Add(new ArgumentNullException(PropertyName));
-        
+
         return this;
     }
     public PropertyValidatorBuilder<T> IsOneOf(IEnumerable<T> options)

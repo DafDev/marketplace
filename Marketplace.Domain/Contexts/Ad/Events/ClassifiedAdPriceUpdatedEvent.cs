@@ -1,4 +1,6 @@
 ﻿
+using Marketplace.Framework.Persistence;
+
 namespace Marketplace.Domain.Contexts.Ad.Events;
 public class ClassifiedAdPriceUpdatedEvent(Guid Id, decimal price, string currencyCode, int decimalPlaces, bool inUse) : DomainEvent(Id)
 {

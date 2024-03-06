@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Marketplace.Framework;
+namespace Marketplace.Framework.Validation;
 public static class ValidatorExtensions
 {
     public static PropertyValidatorBuilder<string> LengthBetween(this PropertyValidatorBuilder<string> value, int min, int max)
@@ -31,7 +31,7 @@ public static class ValidatorExtensions
         {
             if (!char.IsDigit(value.Property.ToCharArray()[i]))
             {
-                if ((value.Property.ToCharArray()[i] < 'A') && (value.Property.ToCharArray()[i] > 'F'))
+                if (value.Property.ToCharArray()[i] < 'A' && value.Property.ToCharArray()[i] > 'F')
                     value.Add(new ArgumentOutOfRangeException(value.PropertyName, "Invalid Hex Character: " + value.Property.ToCharArray()[i]));
             }
         }

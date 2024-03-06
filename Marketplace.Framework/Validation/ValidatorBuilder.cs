@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Marketplace.Framework;
+namespace Marketplace.Framework.Validation;
 
 public class ValidatorBuilder
 {
     protected List<Exception> _exceptions;
-    
+
     public ValidatorBuilder() => _exceptions = [];
     public ValidatorBuilder(List<Exception> exceptions) => _exceptions = exceptions;
 
@@ -54,7 +54,7 @@ public class ValidatorBuilder
         {
             if (!char.IsDigit(property.ToCharArray()[i]))
             {
-                if ((property.ToCharArray()[i] < 'A') && (property.ToCharArray()[i] > 'F'))
+                if (property.ToCharArray()[i] < 'A' && property.ToCharArray()[i] > 'F')
                     _exceptions.Add(new ArgumentOutOfRangeException(propertyName, "Invalid Hex Character: " + property.ToCharArray()[i]));
             }
         }
