@@ -1,6 +1,6 @@
 ﻿namespace Marketplace.Application.Services.Ad;
 
-public interface IEntityStore
+public interface IClassifiedAdRepository
 {
     Task<bool> Exists<T>(string id);
 

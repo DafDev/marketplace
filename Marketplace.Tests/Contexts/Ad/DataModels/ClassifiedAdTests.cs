@@ -68,4 +68,19 @@ public class ClassifiedAdTests
         //Should
         action.Should().ThrowExactly<InvalidEntityStateException>();
     }
+
+    [Fact]
+    public void GivenPriceAmounntIsZeroWhenRequestPublishShouldThrow()
+    {
+        //Given
+        _classifiedAd.SetTitle(ClassifiedAdTitle.FromString("Test title"));
+        _classifiedAd.UpdateText(ClassifiedAdText.FromString("This is a great product I swear"));
+        _classifiedAd.UpdatePrice(Money.FromDecimal(0.0m, "EUR", _currencyLookup));
+
+        //When
+        var action = () => _classifiedAd.RequestToPublish();
+
+        //Should
+        action.Should().ThrowExactly<InvalidEntityStateException>();
+    }
 }

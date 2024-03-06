@@ -5,9 +5,9 @@ using Marketplace.Domain.Contexts.Ad.ValueObjects;
 using System.Reflection.Metadata;
 
 namespace Marketplace.Application.Services.Ad;
-public class ClassifiedAdApplicationService(IEntityStore entityStore, ICurrencyLookup currencyLookup) : IApplicationService
+public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAdRepository, ICurrencyLookup currencyLookup) : IApplicationService
 {
-    private readonly IEntityStore _entityStore = entityStore;
+    private readonly IClassifiedAdRepository _classifiedAdRepository = classifiedAdRepository;
     private readonly ICurrencyLookup _currencyLookup = currencyLookup;
 
     public async Task Handle(AbstractContract command)
@@ -45,19 +45,19 @@ public class ClassifiedAdApplicationService(IEntityStore entityStore, ICurrencyL
     }
 
     private async Task<ClassifiedAd> GetClassifiedAd(Guid classifiedAdId)
-        => await _entityStore.Load<ClassifiedAd>(classifiedAdId.ToString()) ?? throw new InvalidOperationException($"Classified ad id : {classifiedAdId} cannot be found");
+        => await _classifiedAdRepository.Load<ClassifiedAd>(classifiedAdId.ToString()) ?? throw new InvalidOperationException($"Classified ad id : {classifiedAdId} cannot be found");
     private async Task HandleCreate(Create cmd)
     {
-        if (await _entityStore.Exists<ClassifiedAd>(cmd.Id.ToString()))
+        if (await _classifiedAdRepository.Exists<ClassifiedAd>(cmd.Id.ToString()))
             throw new InvalidOperationException($"Classified ad id : {cmd.Id} already exists");
         ClassifiedAd classifiedAd = new(new ClassifiedAdId(cmd.Id), new UserId(cmd.OwnerId));
-        await _entityStore.Save(classifiedAd);
+        await _classifiedAdRepository.Save(classifiedAd);
     }
 
     private async Task HandleUpdate(Guid classifiedAdId, Action<ClassifiedAd> operation)
     {
         var classifiedAd = await GetClassifiedAd(classifiedAdId);
         operation(classifiedAd);
-        await _entityStore.Save(classifiedAd);
+        await _classifiedAdRepository.Save(classifiedAd);
     }
 }

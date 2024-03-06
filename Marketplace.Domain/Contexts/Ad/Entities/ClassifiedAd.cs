@@ -4,7 +4,7 @@ using Marketplace.Domain.Contexts.Ad.ValueObjects;
 
 namespace Marketplace.Domain.Contexts.Ad.Entities;
 
-public class ClassifiedAd : Entity
+public class ClassifiedAd : Entity, IAggregateRoot
 {
     public UserId OwnerId { get; private set; }
     public ClassifiedAdId Id { get; private set; }
@@ -13,6 +13,8 @@ public class ClassifiedAd : Entity
     public Money Price { get; private set; }
     public UserId ApprovedBy { get; private set; }
     public ClassifiedAdState State { get; private set; }
+
+    public string AggregateId => "Ad_"+ Id.ToString();
 
     public ClassifiedAd(ClassifiedAdId id, UserId ownerId) => Apply(new ClassifiedAdCreatedEvent(id, ownerId));
 
@@ -23,6 +25,8 @@ public class ClassifiedAd : Entity
     public void UpdatePrice(Money price) => Apply(new ClassifiedAdPriceUpdatedEvent(Id, price.Amount, price.Currency.CurrencyCode, price.Currency.DecimalPlaces, price.Currency.InUse));
 
     public void RequestToPublish() => Apply(new ClassifiedAdSentForReviewEvent(Id));
+
+    public void AddPicture(Uri pictureUri, PictureSize pictureSize) => Apply(new PictureAddedToClassifiedAdEvent(Id, Guid.NewGuid(),pictureUri.ToString(), pictureSize.Height, pictureSize.Width)); 
 
     protected override void EnsureValidState()
     {
@@ -50,24 +54,26 @@ public class ClassifiedAd : Entity
         {
             case ClassifiedAdCreatedEvent @event:
                 OwnerId = new(@event.OwnerId);
-                Id = new(@event.Id);
+                Id = new(@event.AggregateRootId);
                 State = ClassifiedAdState.Inactive;
                 break;
             case ClassifiedAdPriceUpdatedEvent @event:
-                Id = new(@event.Id);
+                Id = new(@event.AggregateRootId);
                 Price = new(@event.Price, @event.CurrencyCode, @event.InUse, @event.DecimalPlaces);
                 break;
             case ClassifiedAdTextUpdatedEvent @event:
-                Id = new(@event.Id);
+                Id = new(@event.AggregateRootId);
                 Text = new(@event.AdText);
                 break;
             case ClassifiedAdTitleChangedEvent @event:
-                Id = new(@event.Id);
+                Id = new(@event.AggregateRootId);
                 Title = new(@event.Title);
                 break;
             case ClassifiedAdSentForReviewEvent @event:
-                Id = new(@event.Id);
+                Id = new(@event.AggregateRootId);
                 State = ClassifiedAdState.PendingReview;
+                break;
+            case PictureAddedToClassifiedAdEvent @event:
                 break;
             default:
                 break;
