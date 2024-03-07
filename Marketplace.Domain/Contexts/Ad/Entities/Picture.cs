@@ -12,6 +12,7 @@ public class Picture : Entity
     internal Uri Location { get; private set; }
     internal int Order { get; private set; }
 
+    internal void Resize(PictureSize newSize, ClassifiedAdId classifiedAdId) => Apply(new ClassifiedAdPictureResizedEvent(classifiedAdId, Id, newSize));
 
     protected override void OnDomainEventRaised(DomainEvent domainEvent)
     {
@@ -22,6 +23,9 @@ public class Picture : Entity
                 Location = new Uri(@event.Url);
                 Size = new(@event.Height, @event.Width);
                 Order = @event.Order;                
+                break;
+            case ClassifiedAdPictureResizedEvent @event:
+                Size = new(@event.Height, @event.Width);
                 break;
             default:
                 break;

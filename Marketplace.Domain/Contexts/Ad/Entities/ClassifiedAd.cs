@@ -1,5 +1,6 @@
 ﻿using Marketplace.Domain.Contexts.Ad.Events;
 using Marketplace.Domain.Contexts.Ad.Exceptions;
+using Marketplace.Domain.Contexts.Ad.InvariantRules;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
 using Marketplace.Framework.Persistence;
 
@@ -15,9 +16,11 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
     public UserId ApprovedBy { get; private set; }
     public ClassifiedAdState State { get; private set; }
     public List<Picture> Pictures { get; private set; } = [];
-    public string AggregateId => "Ad_"+ Id.ToString();
+    public string AggregateId => "Ad_" + Id.ToString();
 
     public ClassifiedAd(ClassifiedAdId id, UserId ownerId) => Apply(new ClassifiedAdCreatedEvent(id, ownerId));
+
+    #region Public Methods
 
     public void SetTitle(ClassifiedAdTitle title) => Apply(new ClassifiedAdTitleChangedEvent(Id, title));
 
@@ -27,8 +30,17 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
 
     public void RequestToPublish() => Apply(new ClassifiedAdSentForReviewEvent(Id));
 
-    public void AddPicture(Uri pictureUri, PictureSize pictureSize) 
-        => Apply(new PictureAddedToClassifiedAdEvent(Id, Guid.NewGuid(),pictureUri.ToString(), pictureSize.Height, pictureSize.Width, Pictures.Max(x => x.Order) + 1)); 
+    public void AddPicture(Uri pictureUri, PictureSize pictureSize)
+        => Apply(new PictureAddedToClassifiedAdEvent(Id, Guid.NewGuid(), pictureUri.ToString(), pictureSize.Height, pictureSize.Width, Pictures.Max(x => x.Order) + 1));
+
+    public void ResizePicture(PictureId pictureId, PictureSize newSize)
+    {
+        var picture = FindPicture(pictureId) ?? throw new InvalidOperationException($"Cannot resize inexistant picture (id : {pictureId})");
+        picture.Resize(newSize, Id);
+    }
+
+    #endregion
+
 
     protected override void EnsureValidState()
     {
@@ -37,11 +49,13 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
              && (State switch
              {
                  ClassifiedAdState.PendingReview => Title is not null
-                     && Text is not null
-                     && Price?.Amount > 0,
+                    && Text is not null
+                    && Price?.Amount > 0
+                    && FirstPicture.HasCorrectSize(),
                  ClassifiedAdState.Active => Title is not null
                     && Text is not null
                     && Price?.Amount > 0
+                    && FirstPicture.HasCorrectSize()
                     && ApprovedBy is not null,
                  _ => true
              });
@@ -84,4 +98,7 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
                 break;
         }
     }
+
+    private Picture? FindPicture(PictureId pictureId) => Pictures.FirstOrDefault(pic => pic.Id == pictureId);
+    private Picture FirstPicture => Pictures.OrderBy(pic => pic.Order).FirstOrDefault();
 }
