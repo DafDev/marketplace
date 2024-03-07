@@ -10,7 +10,7 @@ public class ClassifiedAdTests
     private readonly ICurrencyLookup _currencyLookup = new FakeCurrencyLookup();
     private readonly ClassifiedAd _classifiedAd;
 
-    public ClassifiedAdTests() => _classifiedAd = new(ownerId: new(Guid.NewGuid()), id: new(Guid.NewGuid()));
+    public ClassifiedAdTests() => _classifiedAd = new(id: new(Guid.NewGuid()), ownerId: new(Guid.NewGuid()));
 
     [Fact]
     public void GivenValidStateWhenRequestPublishShouldReturnStatePendingReview()
@@ -61,6 +61,21 @@ public class ClassifiedAdTests
         //Given
         _classifiedAd.SetTitle(ClassifiedAdTitle.FromString("Test title"));
         _classifiedAd.UpdateText(ClassifiedAdText.FromString("This is a great product I swear"));
+
+        //When
+        var action = () => _classifiedAd.RequestToPublish();
+
+        //Should
+        action.Should().ThrowExactly<InvalidEntityStateException>();
+    }
+
+    [Fact]
+    public void GivenPriceAmounntIsZeroWhenRequestPublishShouldThrow()
+    {
+        //Given
+        _classifiedAd.SetTitle(ClassifiedAdTitle.FromString("Test title"));
+        _classifiedAd.UpdateText(ClassifiedAdText.FromString("This is a great product I swear"));
+        _classifiedAd.UpdatePrice(Money.FromDecimal(0.0m, "EUR", _currencyLookup));
 
         //When
         var action = () => _classifiedAd.RequestToPublish();

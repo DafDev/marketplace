@@ -1,0 +1,18 @@
+﻿using Microsoft.OpenApi.Models;
+
+namespace Marketplace.Web.Endpoints.Extensions;
+
+internal static class SwaggerEndpointsExtensions
+{
+
+    public static IServiceCollection AddSwaggerServices(this IServiceCollection services)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(generator =>
+        {
+            generator.SwaggerDoc("v1", new OpenApiInfo { Title = "Mars Rover Operation", Version = "v1" });
+        });
+
+        return services;
+    }
+}
