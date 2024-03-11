@@ -2,7 +2,6 @@
 using Marketplace.Domain.Contexts.Ad.DomainService;
 using Marketplace.Domain.Contexts.Ad.Entities;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
-using System.Reflection.Metadata;
 
 namespace Marketplace.Application.Services.Ad;
 public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAdRepository, ICurrencyLookup currencyLookup) : IApplicationService
