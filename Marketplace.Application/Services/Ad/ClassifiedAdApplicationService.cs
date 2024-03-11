@@ -1,13 +1,16 @@
 ﻿using Marketplace.Application.Contracts.V1;
-using Marketplace.Domain.Contexts.Ad.DomainService;
+using Marketplace.Domain.Contexts.Ad.DomainServices;
 using Marketplace.Domain.Contexts.Ad.Entities;
+using Marketplace.Domain.Contexts.Ad.Repositories;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
+using Marketplace.Framework.Persistence;
 
 namespace Marketplace.Application.Services.Ad;
-public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAdRepository, ICurrencyLookup currencyLookup) : IApplicationService
+public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAdRepository, IUnitOfWork unitOfWork , ICurrencyLookup currencyLookup) : IApplicationService
 {
     private readonly IClassifiedAdRepository _classifiedAdRepository = classifiedAdRepository;
     private readonly ICurrencyLookup _currencyLookup = currencyLookup;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task Handle(AbstractContract command)
     {
@@ -44,19 +47,20 @@ public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAd
     }
 
     private async Task<ClassifiedAd> GetClassifiedAd(Guid classifiedAdId)
-        => await _classifiedAdRepository.Load<ClassifiedAd>(classifiedAdId.ToString()) ?? throw new InvalidOperationException($"Classified ad id : {classifiedAdId} cannot be found");
+        => await _classifiedAdRepository.Load<ClassifiedAd>(new(classifiedAdId)) ?? throw new InvalidOperationException($"Classified ad id : {classifiedAdId} cannot be found");
     private async Task HandleCreate(Create cmd)
     {
-        if (await _classifiedAdRepository.Exists<ClassifiedAd>(cmd.Id.ToString()))
+        if (await _classifiedAdRepository.Exists(new(cmd.Id)))
             throw new InvalidOperationException($"Classified ad id : {cmd.Id} already exists");
         ClassifiedAd classifiedAd = new(new ClassifiedAdId(cmd.Id), new UserId(cmd.OwnerId));
-        await _classifiedAdRepository.Save(classifiedAd);
+        await _classifiedAdRepository.Add(classifiedAd);
+        await _unitOfWork.Commit();
     }
 
     private async Task HandleUpdate(Guid classifiedAdId, Action<ClassifiedAd> operation)
     {
         var classifiedAd = await GetClassifiedAd(classifiedAdId);
         operation(classifiedAd);
-        await _classifiedAdRepository.Save(classifiedAd);
+        await _classifiedAdRepository.Add(classifiedAd);
     }
 }

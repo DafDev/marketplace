@@ -1,8 +1,8 @@
 ﻿using Marketplace.Domain.Contexts.Ad.Entities;
-using Marketplace.Domain.Contexts.Ad.DomainService;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
 using Marketplace.Tests.Contexts.Ad.DomainServices;
 using Marketplace.Domain.Contexts.Ad.Exceptions;
+using Marketplace.Domain.Contexts.Ad.DomainServices;
 
 namespace Marketplace.Tests.Contexts.Ad.DataModels;
 public class ClassifiedAdTests

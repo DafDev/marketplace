@@ -1,4 +1,4 @@
-﻿using Marketplace.Domain.Contexts.Ad.DomainService;
+﻿using Marketplace.Domain.Contexts.Ad.DomainServices;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
 
 namespace Marketplace.Tests.Contexts.Ad.DomainServices;
