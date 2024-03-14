@@ -1,9 +1,13 @@
-﻿namespace Marketplace.Application.Services.Ad;
+﻿using Marketplace.Domain.Contexts.Ad.Entities;
+using Marketplace.Domain.Contexts.Ad.ValueObjects;
+
+namespace Marketplace.Application.Services.Ad;
 
 public interface IClassifiedAdRepository
 {
-    Task<bool> Exists<T>(string id);
+    Task<bool> Exists(ClassifiedAdId id);
 
-    Task<T> Load<T>(string id);
-    Task Add<T>(T entity);
+    Task<ClassifiedAd> Load<ClassifiedAd>(ClassifiedAdId id);
+
+    Task Add(ClassifiedAd entity);
 }
