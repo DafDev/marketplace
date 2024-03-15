@@ -1,6 +1,7 @@
 ﻿using Marketplace.Application.Contracts.V1;
 using Marketplace.Domain.Contexts.Ad.DomainService;
 using Marketplace.Domain.Contexts.Ad.Entities;
+using Marketplace.Domain.Contexts.Ad.Repositories;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
 using Marketplace.Framework.Persistence;
 
@@ -46,7 +47,7 @@ public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAd
     }
 
     private async Task<ClassifiedAd> GetClassifiedAd(Guid classifiedAdId)
-        => await _classifiedAdRepository.Load<ClassifiedAd>(new(classifiedAdId)) ?? throw new InvalidOperationException($"Classified ad id : {classifiedAdId} cannot be found");
+        => await _classifiedAdRepository.Load(new(classifiedAdId)) ?? throw new InvalidOperationException($"Classified ad id : {classifiedAdId} cannot be found");
     private async Task HandleCreate(Create cmd)
     {
         if (await _classifiedAdRepository.Exists(new(cmd.Id)))

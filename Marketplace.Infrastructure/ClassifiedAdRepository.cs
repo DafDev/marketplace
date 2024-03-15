@@ -1,16 +1,14 @@
 ﻿using Marketplace.Domain.Contexts.Ad.Entities;
 using Marketplace.Domain.Contexts.Ad.Repositories;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
-using Raven.Client.Documents.Session;
+using Marketplace.Infrastructure.Contexts;
 
 namespace Marketplace.Infrastructure;
 
-public class ClassifiedAdRepository(IAsyncDocumentSession session) : IClassifiedAdRepository
+public class ClassifiedAdRepository(ClassifiedAdDbContext dbContext) : IClassifiedAdRepository
 {
-    private readonly IAsyncDocumentSession _session = session;
-
-    public Task Add(ClassifiedAd entity) => _session.StoreAsync(entity, EntityId(entity.Id));
-    public Task<bool> Exists(ClassifiedAdId id) => _session.Advanced.ExistsAsync(EntityId(id));
-    public Task<ClassifiedAd> Load<ClassifiedAd>(ClassifiedAdId id) => _session.LoadAsync<ClassifiedAd>(EntityId(id));
-    private static string EntityId(ClassifiedAdId id) => $"ClassifiedAd/{id}";
+    private readonly ClassifiedAdDbContext _dbContext = dbContext;
+    public async Task Add(ClassifiedAd entity) => await _dbContext.ClassifiedAds.AddAsync(entity);
+    public async Task<bool> Exists(ClassifiedAdId id) => await _dbContext.ClassifiedAds.FindAsync(id.Value) != null;
+    public async Task<ClassifiedAd> Load(ClassifiedAdId id) => await _dbContext.ClassifiedAds.FindAsync(id.Value);
 }

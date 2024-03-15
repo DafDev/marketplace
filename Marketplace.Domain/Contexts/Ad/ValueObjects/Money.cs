@@ -1,8 +1,11 @@
 ﻿using Marketplace.Domain.Contexts.Ad.DomainService;
 using Marketplace.Domain.Contexts.Ad.Exceptions;
 using System.Globalization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
+
+[ComplexType]
 public record class Money
 {
     public decimal Amount { get; init; }

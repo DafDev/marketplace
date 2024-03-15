@@ -1,7 +1,9 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
 
+[ComplexType]
 public record ClassifiedAdText
 {
     public string Value { get; init; }
