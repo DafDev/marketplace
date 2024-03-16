@@ -19,6 +19,7 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
     public string AggregateId => "Ad_" + ClassifiedAdId.ToString();
 
     public ClassifiedAd(ClassifiedAdId classifiedAdId, UserId ownerId) => Apply(new ClassifiedAdCreatedEvent(classifiedAdId, ownerId));
+    protected ClassifiedAd() { }
 
     #region Public Methods
 
@@ -33,7 +34,7 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
     public void AddPicture(Uri pictureUri, PictureSize pictureSize)
     {
         var order = Pictures.Count > 0 ? Pictures.Max(x => x.Order) + 1 : 0;
-        Apply(new PictureAddedToClassifiedAdEvent(Id, Guid.NewGuid(), pictureUri.ToString(), pictureSize.Height, pictureSize.Width, order));
+        Apply(new PictureAddedToClassifiedAdEvent(ClassifiedAdId, Guid.NewGuid(), pictureUri.ToString(), pictureSize.Height, pictureSize.Width, order));
     }
 
     public void ResizePicture(PictureId pictureId, PictureSize newSize)
@@ -102,6 +103,6 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
         }
     }
 
-    private Picture? FindPicture(PictureId pictureId) => Pictures.FirstOrDefault(pic => pic.Id == pictureId);
+    private Picture? FindPicture(PictureId pictureId) => Pictures.FirstOrDefault(pic => pic.PictureId == pictureId);
     private Picture FirstPicture => Pictures.OrderBy(pic => pic.Order).FirstOrDefault();
 }

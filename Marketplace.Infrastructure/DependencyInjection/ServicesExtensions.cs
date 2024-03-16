@@ -1,5 +1,6 @@
 ﻿using Marketplace.Domain.Contexts.Ad.Repositories;
 using Marketplace.Framework.Persistence;
+using Marketplace.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;

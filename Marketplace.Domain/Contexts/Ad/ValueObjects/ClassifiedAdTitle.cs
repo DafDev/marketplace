@@ -1,7 +1,10 @@
 ﻿using Marketplace.Framework.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
+
+[ComplexType]
 public record ClassifiedAdTitle(string Title)
 {
     public static ClassifiedAdTitle FromString(string title) => new(title);

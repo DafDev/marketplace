@@ -5,6 +5,8 @@ public abstract class Entity : IInternalEventHandler
 
     protected Entity(Action<DomainEvent> applier) => _applier = applier;
 
+    protected Entity() { }
+
     protected void Apply(DomainEvent domainEvent)
     {
         OnDomainEventRaised(domainEvent);

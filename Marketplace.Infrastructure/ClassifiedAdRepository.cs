@@ -9,6 +9,6 @@ public class ClassifiedAdRepository(ClassifiedAdDbContext dbContext) : IClassifi
 {
     private readonly ClassifiedAdDbContext _dbContext = dbContext;
     public async Task Add(ClassifiedAd entity) => await _dbContext.ClassifiedAds.AddAsync(entity);
-    public async Task<bool> Exists(ClassifiedAdId id) => await _dbContext.ClassifiedAds.FindAsync(id.Value) != null;
-    public async Task<ClassifiedAd> Load(ClassifiedAdId id) => await _dbContext.ClassifiedAds.FindAsync(id.Value);
+    public async Task<bool> Exists(ClassifiedAdId id) => await _dbContext.ClassifiedAds.FindAsync(id) != null;
+    public async Task<ClassifiedAd> Load(ClassifiedAdId id) => await _dbContext.ClassifiedAds.FindAsync(id);
 }

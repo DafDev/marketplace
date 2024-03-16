@@ -17,6 +17,7 @@ public record class Money
     #endregion
 
     #region CONSTRUCTORS
+    internal Money() { }
     protected Money(decimal amount, string currencyCode, ICurrencyLookup currencyLookup)
     {
         if (string.IsNullOrWhiteSpace(currencyCode))

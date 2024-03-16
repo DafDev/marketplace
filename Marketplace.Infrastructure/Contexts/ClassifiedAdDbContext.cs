@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Contexts.Ad.Entities;
+using Marketplace.Infrastructure.ContextConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -14,7 +15,10 @@ public class ClassifiedAdDbContext(DbContextOptions<ClassifiedAdDbContext> optio
         optionsBuilder.UseLoggerFactory(_loggerFactory);
         optionsBuilder.EnableSensitiveDataLogging();
     }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.ApplyConfiguration(new ClassifiedAdEntityTypeConfiguration());
-
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new PictureEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ClassifiedAdEntityTypeConfiguration());
+    }
 }
