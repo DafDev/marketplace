@@ -31,7 +31,10 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
     public void RequestToPublish() => Apply(new ClassifiedAdSentForReviewEvent(Id));
 
     public void AddPicture(Uri pictureUri, PictureSize pictureSize)
-        => Apply(new PictureAddedToClassifiedAdEvent(Id, Guid.NewGuid(), pictureUri.ToString(), pictureSize.Height, pictureSize.Width, Pictures.Max(x => x.Order) + 1));
+    {
+        var order = Pictures.Count > 0 ? Pictures.Max(x => x.Order) + 1 : 0;
+        Apply(new PictureAddedToClassifiedAdEvent(Id, Guid.NewGuid(), pictureUri.ToString(), pictureSize.Height, pictureSize.Width, order));
+    }
 
     public void ResizePicture(PictureId pictureId, PictureSize newSize)
     {

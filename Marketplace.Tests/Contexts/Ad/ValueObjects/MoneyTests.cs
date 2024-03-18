@@ -24,7 +24,7 @@ public class MoneyTests
     {
         //Given
         Money firstAmount = Money.FromDecimal(5, "EUR", _currencyLookup);
-        Money secondAmount = Money.FromString("5,00", "EUR", _currencyLookup);
+        Money secondAmount = Money.FromString("5.00", "EUR", _currencyLookup);
         //Should
         firstAmount.Should().Be(secondAmount);
     }
@@ -89,7 +89,7 @@ public class MoneyTests
         var actual = firstAmount.ToString(); 
 
         //Should
-        actual.Should().Be("EUR 6,58");
+        actual.Should().Be("EUR 6.58");
     }
 
     [Fact]
