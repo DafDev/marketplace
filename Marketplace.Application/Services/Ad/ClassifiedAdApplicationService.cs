@@ -39,6 +39,10 @@ public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAd
                 await HandleUpdate(cmd.Id, classifiedAd => classifiedAd.RequestToPublish());
                 break;
 
+            case AddPicture cmd:
+                await HandleUpdate(cmd.Id,
+                    classifiedAd => classifiedAd.AddPicture(new Uri(cmd.Url), new PictureSize(cmd.Height, cmd.Width)));
+                break;
             default:
                 throw new InvalidOperationException($"Command type {command.GetType().FullName} is unknown.");
         }
@@ -61,6 +65,6 @@ public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAd
     {
         var classifiedAd = await GetClassifiedAd(classifiedAdId);
         operation(classifiedAd);
-        await _classifiedAdRepository.Add(classifiedAd);
+        await _unitOfWork.Commit();
     }
 }
