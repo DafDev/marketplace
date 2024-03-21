@@ -11,6 +11,7 @@ public class MarketplaceEndpoints : IEndpointDefinition
         app.MapPut("/ad/title", SetTitle);
         app.MapPut("/ad/text", UpdateText);
         app.MapPut("/ad/price", UpdatePrice);
+        app.MapPut("ad/picture", AddPicture);
         app.MapPut("/ad/publih", RequestToPublish);
     }
 
@@ -33,6 +34,12 @@ public class MarketplaceEndpoints : IEndpointDefinition
     }
     
     public async Task<IResult> UpdatePrice(UpdatePrice command, IApplicationService classifiedAdsApplicationServices)
+    {
+        await classifiedAdsApplicationServices.Handle(command);
+        return Results.Ok();
+    }
+
+    public async Task<IResult> AddPicture(AddPicture command, IApplicationService classifiedAdsApplicationServices)
     {
         await classifiedAdsApplicationServices.Handle(command);
         return Results.Ok();

@@ -1,8 +1,11 @@
 ﻿using Marketplace.Domain.Contexts.Ad.DomainService;
 using Marketplace.Domain.Contexts.Ad.Exceptions;
 using System.Globalization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
+
+[ComplexType]
 public record class Money
 {
     public decimal Amount { get; init; }
@@ -14,6 +17,7 @@ public record class Money
     #endregion
 
     #region CONSTRUCTORS
+    internal Money() { }
     protected Money(decimal amount, string currencyCode, ICurrencyLookup currencyLookup)
     {
         if (string.IsNullOrWhiteSpace(currencyCode))

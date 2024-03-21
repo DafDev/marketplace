@@ -1,4 +1,5 @@
 ﻿using Marketplace.Application.Services.Ad;
+using Marketplace.Domain.Contexts.Ad.DomainService;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,9 +9,8 @@ public static class ServicesExtensions
 {
     public static IServiceCollection AddDependencies(this IServiceCollection services)
     {
-        //services.AddSingleton<IEntityStore, RavenDbEntity>();
+        services.AddScoped<ICurrencyLookup, FixedCurrencyLookup>();
         services.AddScoped<IApplicationService, ClassifiedAdApplicationService>();
-
         return services;
     }
 }

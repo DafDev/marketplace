@@ -1,6 +1,9 @@
-﻿namespace Marketplace.Framework.Persistence;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Marketplace.Framework.Persistence;
 public abstract class AggregateRoot : IInternalEventHandler
 {
+    [NotMapped]
     public List<DomainEvent> DomainEvents { get; private set; } = [];
     public void ClearEvents() => DomainEvents.Clear();
 
