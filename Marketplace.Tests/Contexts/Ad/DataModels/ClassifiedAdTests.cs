@@ -103,4 +103,32 @@ public class ClassifiedAdTests
         //Should
         action.Should().ThrowExactly<InvalidEntityStateException>();
     }
+
+    [Fact]
+    public void GivenValidSizeWhenResizePictureShouldReturn()
+    {
+        //Given
+        _classifiedAd.AddPicture(new Uri("http://tumblr.com"), new PictureSize(900, 1200));
+        PictureSize newSize = new(2500, 1700);
+
+        //When
+        _classifiedAd.ResizePicture(_classifiedAd.Pictures.First().PictureId, newSize);
+
+        //Should
+        _classifiedAd.Pictures.First().Size.Should().Be(newSize);
+    }
+
+    [Fact]
+    public void GivenInValidSizeWhenResizePictureShouldThrow()
+    {
+        //Given
+        PictureSize newSize = new(500, 700);
+
+        //When
+        var action = () => _classifiedAd.ResizePicture(new PictureId(Guid.NewGuid()), newSize) ;
+
+        //Should
+        action.Should().ThrowExactly<InvalidOperationException>();
+
+    }
 }
