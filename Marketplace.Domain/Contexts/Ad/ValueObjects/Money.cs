@@ -1,5 +1,6 @@
 ﻿using Marketplace.Domain.Contexts.Ad.DomainService;
 using Marketplace.Domain.Contexts.Ad.Exceptions;
+using System.Globalization;
 
 namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
 public record class Money
@@ -9,7 +10,7 @@ public record class Money
 
     #region FACTORIES
     public static Money FromDecimal(decimal amount, string currency, ICurrencyLookup currencyLookup) => new(amount, currency, currencyLookup);
-    public static Money FromString(string amount, string currency, ICurrencyLookup currencyLookup) => new(decimal.Parse(amount), currency, currencyLookup);
+    public static Money FromString(string amount, string currency, ICurrencyLookup currencyLookup) => new(decimal.Parse(amount, CultureInfo.InvariantCulture), currency, currencyLookup);
     #endregion
 
     #region CONSTRUCTORS
@@ -61,5 +62,5 @@ public record class Money
     public static Money operator -(Money a, Money b) => a.Substract(b); 
     #endregion
 
-    public override string ToString() => $"{Currency.CurrencyCode} {Amount}";
+    public override string ToString() => $"{Currency.CurrencyCode} {Amount.ToString(CultureInfo.InvariantCulture)}";
 }

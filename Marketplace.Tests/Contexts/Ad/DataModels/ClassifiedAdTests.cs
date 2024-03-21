@@ -16,6 +16,7 @@ public class ClassifiedAdTests
     public void GivenValidStateWhenRequestPublishShouldReturnStatePendingReview()
     {
         //Given
+        _classifiedAd.AddPicture(new("http://tumblr.com"), new(900, 1200));
         _classifiedAd.SetTitle(ClassifiedAdTitle.FromString("Test title"));
         _classifiedAd.UpdateText(ClassifiedAdText.FromString("This is a great product I swear"));
         _classifiedAd.UpdatePrice(Money.FromDecimal(100.99m, "EUR", _currencyLookup));
