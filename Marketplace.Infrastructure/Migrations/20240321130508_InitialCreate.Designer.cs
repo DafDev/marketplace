@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Marketplace.Infrastructure.Migrations
 {
     [DbContext(typeof(ClassifiedAdDbContext))]
-    [Migration("20240316045601_InitialCreate")]
+    [Migration("20240321130508_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -101,7 +101,7 @@ namespace Marketplace.Infrastructure.Migrations
                     b.Property<Guid>("PictureId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ClassifiedAdId1")
+                    b.Property<Guid>("ClassifiedAdId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Location")
@@ -110,14 +110,6 @@ namespace Marketplace.Infrastructure.Migrations
 
                     b.Property<int>("Order")
                         .HasColumnType("integer");
-
-                    b.ComplexProperty<Dictionary<string, object>>("ClassifiedAdId", "Marketplace.Domain.Contexts.Ad.Entities.Picture.ClassifiedAdId#ClassifiedAdId", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<Guid>("Value")
-                                .HasColumnType("uuid");
-                        });
 
                     b.ComplexProperty<Dictionary<string, object>>("Size", "Marketplace.Domain.Contexts.Ad.Entities.Picture.Size#PictureSize", b1 =>
                         {
@@ -132,16 +124,18 @@ namespace Marketplace.Infrastructure.Migrations
 
                     b.HasKey("PictureId");
 
-                    b.HasIndex("ClassifiedAdId1");
+                    b.HasIndex("ClassifiedAdId");
 
-                    b.ToTable("Picture");
+                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("Marketplace.Domain.Contexts.Ad.Entities.Picture", b =>
                 {
-                    b.HasOne("Marketplace.Domain.Contexts.Ad.Entities.ClassifiedAd", "Marketplace.Domain.Contexts.Ad.Entities.ClassifiedAd.ClassifiedAdId")
+                    b.HasOne("Marketplace.Domain.Contexts.Ad.Entities.ClassifiedAd", null)
                         .WithMany("Pictures")
-                        .HasForeignKey("ClassifiedAdId1");
+                        .HasForeignKey("ClassifiedAdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Marketplace.Domain.Contexts.Ad.Entities.ClassifiedAd", b =>

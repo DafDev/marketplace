@@ -12,6 +12,5 @@ internal class PictureEntityTypeConfiguration : IEntityTypeConfiguration<Picture
         builder.Property(pic => pic.PictureId)
             .HasConversion(pictureId => pictureId.Value, dbId => new PictureId(dbId));
         builder.ComplexProperty(pic => pic.Size);
-        builder.ComplexProperty(pic => pic.ClassifiedAdId);
     }
 }

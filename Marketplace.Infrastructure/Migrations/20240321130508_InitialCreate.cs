@@ -32,38 +32,38 @@ namespace Marketplace.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Picture",
+                name: "Pictures",
                 columns: table => new
                 {
                     PictureId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClassifiedAdId = table.Column<Guid>(type: "uuid", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: false),
                     Order = table.Column<int>(type: "integer", nullable: false),
-                    ClassifiedAdId1 = table.Column<Guid>(type: "uuid", nullable: true),
-                    ClassifiedAdId_Value = table.Column<Guid>(type: "uuid", nullable: false),
                     Size_Height = table.Column<double>(type: "double precision", nullable: false),
                     Size_Width = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Picture", x => x.PictureId);
+                    table.PrimaryKey("PK_Pictures", x => x.PictureId);
                     table.ForeignKey(
-                        name: "FK_Picture_ClassifiedAds_ClassifiedAdId1",
-                        column: x => x.ClassifiedAdId1,
+                        name: "FK_Pictures_ClassifiedAds_ClassifiedAdId",
+                        column: x => x.ClassifiedAdId,
                         principalTable: "ClassifiedAds",
-                        principalColumn: "ClassifiedAdId");
+                        principalColumn: "ClassifiedAdId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Picture_ClassifiedAdId1",
-                table: "Picture",
-                column: "ClassifiedAdId1");
+                name: "IX_Pictures_ClassifiedAdId",
+                table: "Pictures",
+                column: "ClassifiedAdId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Picture");
+                name: "Pictures");
 
             migrationBuilder.DropTable(
                 name: "ClassifiedAds");

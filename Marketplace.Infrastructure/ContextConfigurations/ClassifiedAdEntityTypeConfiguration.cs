@@ -10,13 +10,16 @@ internal class ClassifiedAdEntityTypeConfiguration : IEntityTypeConfiguration<Cl
     public void Configure(EntityTypeBuilder<ClassifiedAd> builder)
     {
         builder.HasKey(ad => ad.ClassifiedAdId);
+        builder.Property(ad => ad.ClassifiedAdId)
+            .HasConversion(classifiedAdId => classifiedAdId.Value, dbId => new ClassifiedAdId(dbId));
         builder.ComplexProperty(ad => ad.Title);
         builder.ComplexProperty(ad => ad.OwnerId);
         builder.ComplexProperty(ad => ad.ApprovedBy);
         builder.ComplexProperty(ad => ad.Text);
         builder.ComplexProperty(ad => ad.Price);
 
-        builder.Property(ad => ad.ClassifiedAdId)
-            .HasConversion(classifiedAdId => classifiedAdId.Value, dbId => new ClassifiedAdId(dbId));
+        builder.HasMany(ad => ad.Pictures)
+            .WithOne()
+            .HasForeignKey(pic => pic.ClassifiedAdId);
     }
 }

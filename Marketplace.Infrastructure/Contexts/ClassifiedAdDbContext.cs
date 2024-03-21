@@ -9,6 +9,7 @@ public class ClassifiedAdDbContext(DbContextOptions<ClassifiedAdDbContext> optio
     private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
     public DbSet<ClassifiedAd> ClassifiedAds { get; set; }
+    public DbSet<Picture> Pictures { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
