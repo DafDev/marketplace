@@ -11,7 +11,7 @@ public static class ServicesExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        const string connectionString = "Host=localhost;Database=Marketplace_EFCore;Username=ddd;Password=book";
+        const string connectionString = "Host=localhost;Database=Marketplace_EFCore;Username=postgres;Password=ultim";
         services.AddEntityFrameworkNpgsql()
             .AddDbContext<ClassifiedAdDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<IUnitOfWork, EfCoreUnitOfWork>();
