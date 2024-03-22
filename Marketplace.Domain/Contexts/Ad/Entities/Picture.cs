@@ -8,11 +8,13 @@ public class Picture : Entity
     public Picture(Action<DomainEvent> applier) : base(applier) { }
     protected Picture() :base() { }
 
+    #region Properties
     public ClassifiedAdId ClassifiedAdId { get; private set; }
     public PictureId PictureId { get; private set; }
     public PictureSize Size { get; private set; }
     public Uri Location { get; private set; }
-    public int Order { get; private set; }
+    public int Order { get; private set; } 
+    #endregion
 
     internal void Resize(PictureSize newSize, ClassifiedAdId classifiedAdId) => Apply(new ClassifiedAdPictureResizedEvent(classifiedAdId, PictureId, newSize));
 

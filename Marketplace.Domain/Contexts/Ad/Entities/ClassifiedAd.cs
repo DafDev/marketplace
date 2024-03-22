@@ -1,5 +1,4 @@
 ﻿using Marketplace.Domain.Contexts.Ad.Events;
-using Marketplace.Domain.Contexts.Ad.Exceptions;
 using Marketplace.Domain.Contexts.Ad.InvariantRules;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
 using Marketplace.Domain.Shared.Exceptions;
@@ -10,6 +9,7 @@ namespace Marketplace.Domain.Contexts.Ad.Entities;
 
 public class ClassifiedAd : AggregateRoot, IAggregateRoot
 {
+    #region Properties
     public UserId OwnerId { get; private set; }
     public ClassifiedAdId ClassifiedAdId { get; private set; }
     public ClassifiedAdTitle? Title { get; private set; }
@@ -18,7 +18,8 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
     public UserId? ApprovedBy { get; private set; }
     public ClassifiedAdState State { get; private set; }
     public List<Picture> Pictures { get; private set; } = [];
-    public string AggregateId => "Ad_" + ClassifiedAdId.ToString();
+    public string AggregateId => "Ad_" + ClassifiedAdId.ToString(); 
+    #endregion
 
     public ClassifiedAd(ClassifiedAdId classifiedAdId, UserId ownerId) => Apply(new ClassifiedAdCreatedEvent(classifiedAdId, ownerId));
     protected ClassifiedAd() { }
@@ -48,6 +49,7 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
     #endregion
 
 
+    #region Event and State Handling
     protected override void EnsureValidState()
     {
         var isValid = ClassifiedAdId is not null
@@ -68,7 +70,7 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
 
         if (!isValid)
             throw new InvalidEntityStateException(this, $"Post-checks failed in state {State}");
-    }
+    } 
 
     protected override void OnDomainEventRaised(DomainEvent domainEvent)
     {
@@ -104,7 +106,10 @@ public class ClassifiedAd : AggregateRoot, IAggregateRoot
                 break;
         }
     }
+    #endregion
 
+    #region Helper methods
     private Picture? FindPicture(PictureId pictureId) => Pictures.FirstOrDefault(pic => pic.PictureId == pictureId);
-    private Picture FirstPicture => Pictures.OrderBy(pic => pic.Order).FirstOrDefault();
+    private Picture FirstPicture => Pictures.OrderBy(pic => pic.Order).FirstOrDefault(); 
+    #endregion
 }
