@@ -1,5 +1,5 @@
-﻿using Marketplace.Application.Contracts.V1;
-using Marketplace.Application.Services.Ad;
+﻿using Marketplace.Application.Ad.Contracts.V1;
+using Marketplace.Application.Shared.Services;
 
 namespace Marketplace.Web.Endpoints;
 

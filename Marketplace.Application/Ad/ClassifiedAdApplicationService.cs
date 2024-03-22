@@ -1,4 +1,6 @@
-﻿using Marketplace.Application.Contracts.V1;
+﻿using Marketplace.Application.Ad.Contracts.V1;
+using Marketplace.Application.Shared;
+using Marketplace.Application.Shared.Services;
 using Marketplace.Domain.Contexts.Ad.Entities;
 using Marketplace.Domain.Contexts.Ad.Repositories;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
@@ -6,7 +8,7 @@ using Marketplace.Domain.Shared.DomainServices;
 using Marketplace.Domain.Shared.ValueObjects;
 using Marketplace.Framework.Persistence;
 
-namespace Marketplace.Application.Services.Ad;
+namespace Marketplace.Application.Ad;
 public class ClassifiedAdApplicationService(IClassifiedAdRepository classifiedAdRepository, IUnitOfWork unitOfWork, ICurrencyLookup currencyLookup) : IApplicationService
 {
     private readonly IClassifiedAdRepository _classifiedAdRepository = classifiedAdRepository;
