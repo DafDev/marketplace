@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
+namespace Marketplace.Domain.Shared.ValueObjects;
 
 [ComplexType]
 public record UserId(Guid Value)
