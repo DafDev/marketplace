@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Shared.DomainServices;
+using Marketplace.Domain.Shared.Exceptions;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Marketplace.Domain.Contexts.User.ValueObjects;
