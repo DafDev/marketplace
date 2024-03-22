@@ -1,5 +1,5 @@
 ﻿using Marketplace.Application.Services.Ad;
-using Marketplace.Domain.Contexts.Ad.DomainService;
+using Marketplace.Domain.Shared.DomainServices;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 

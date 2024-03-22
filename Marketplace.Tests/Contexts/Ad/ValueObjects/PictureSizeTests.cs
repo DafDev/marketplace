@@ -1,11 +1,4 @@
-﻿using Marketplace.Domain.Contexts.Ad.DomainService;
-using Marketplace.Domain.Contexts.Ad.Exceptions;
-using Marketplace.Domain.Contexts.Ad.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Marketplace.Domain.Contexts.Ad.ValueObjects;
 
 namespace Marketplace.Tests.Contexts.Ad.ValueObjects;
 public class PictureSizeTests

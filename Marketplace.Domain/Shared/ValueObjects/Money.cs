@@ -1,9 +1,9 @@
-﻿using Marketplace.Domain.Contexts.Ad.DomainService;
-using Marketplace.Domain.Contexts.Ad.Exceptions;
+﻿using Marketplace.Domain.Contexts.Ad.Exceptions;
 using System.Globalization;
 using System.ComponentModel.DataAnnotations.Schema;
+using Marketplace.Domain.Shared.DomainServices;
 
-namespace Marketplace.Domain.Contexts.Ad.ValueObjects;
+namespace Marketplace.Domain.Shared.ValueObjects;
 
 [ComplexType]
 public record class Money
@@ -63,7 +63,7 @@ public record class Money
             : throw new CurrencyMismatchException("Cannot substract amounts from different currencies.");
 
     public static Money operator +(Money a, Money b) => a.Add(b);
-    public static Money operator -(Money a, Money b) => a.Substract(b); 
+    public static Money operator -(Money a, Money b) => a.Substract(b);
     #endregion
 
     public override string ToString() => $"{Currency.CurrencyCode} {Amount.ToString(CultureInfo.InvariantCulture)}";

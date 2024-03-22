@@ -1,5 +1,5 @@
-﻿using Marketplace.Domain.Contexts.Ad.DomainService;
-using Marketplace.Domain.Contexts.Ad.ValueObjects;
+﻿using Marketplace.Domain.Shared.DomainServices;
+using Marketplace.Domain.Shared.ValueObjects;
 
 namespace Marketplace.Tests.Contexts.Ad.DomainServices;
 internal class FakeCurrencyLookup : ICurrencyLookup
