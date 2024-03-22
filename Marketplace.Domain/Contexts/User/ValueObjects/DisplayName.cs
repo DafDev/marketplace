@@ -1,7 +1,7 @@
 ﻿using Marketplace.Domain.Shared.DomainServices;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Marketplace.Domain.Contexts.UserProfile.ValueObjects;
+namespace Marketplace.Domain.Contexts.User.ValueObjects;
 [ComplexType]
 public record DisplayName(string Value)
 {
