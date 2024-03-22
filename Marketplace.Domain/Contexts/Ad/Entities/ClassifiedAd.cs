@@ -2,6 +2,8 @@
 using Marketplace.Domain.Contexts.Ad.Exceptions;
 using Marketplace.Domain.Contexts.Ad.InvariantRules;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
+using Marketplace.Domain.Shared.Exceptions;
+using Marketplace.Domain.Shared.ValueObjects;
 using Marketplace.Framework.Persistence;
 
 namespace Marketplace.Domain.Contexts.Ad.Entities;

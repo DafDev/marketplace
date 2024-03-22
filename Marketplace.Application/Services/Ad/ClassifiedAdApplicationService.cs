@@ -1,8 +1,9 @@
 ﻿using Marketplace.Application.Contracts.V1;
-using Marketplace.Domain.Contexts.Ad.DomainService;
 using Marketplace.Domain.Contexts.Ad.Entities;
 using Marketplace.Domain.Contexts.Ad.Repositories;
 using Marketplace.Domain.Contexts.Ad.ValueObjects;
+using Marketplace.Domain.Shared.DomainServices;
+using Marketplace.Domain.Shared.ValueObjects;
 using Marketplace.Framework.Persistence;
 
 namespace Marketplace.Application.Services.Ad;
