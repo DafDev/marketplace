@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Marketplace.Infrastructure.Migrations
 {
-    [DbContext(typeof(ClassifiedAdDbContext))]
+    [DbContext(typeof(MarketplaceDbContext))]
     partial class ClassifiedAdDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

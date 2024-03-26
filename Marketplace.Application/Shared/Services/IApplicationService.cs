@@ -1,5 +1,5 @@
 ﻿namespace Marketplace.Application.Shared.Services;
-public interface IApplicationService
+public interface IApplicationService<TContract>
 {
-    Task Handle(AbstractContract command);
+    Task Handle(TContract command);
 }

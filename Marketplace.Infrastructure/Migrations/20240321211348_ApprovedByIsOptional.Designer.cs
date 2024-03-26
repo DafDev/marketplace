@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Marketplace.Infrastructure.Migrations
 {
-    [DbContext(typeof(ClassifiedAdDbContext))]
+    [DbContext(typeof(MarketplaceDbContext))]
     [Migration("20240321211348_ApprovedByIsOptional")]
     partial class ApprovedByIsOptional
     {

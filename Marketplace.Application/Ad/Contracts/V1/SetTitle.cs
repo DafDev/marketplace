@@ -1,7 +1,5 @@
-﻿using Marketplace.Application.Shared;
-
-namespace Marketplace.Application.Ad.Contracts.V1;
-public class SetTitle : AbstractContract
+﻿namespace Marketplace.Application.Ad.Contracts.V1;
+public class SetTitle : AdContract
 {
     public string Title { get; set; } = string.Empty;
 }

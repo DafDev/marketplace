@@ -1,8 +1,6 @@
-﻿using Marketplace.Application.Shared;
+﻿namespace Marketplace.Application.Ad.Contracts.V1;
 
-namespace Marketplace.Application.Ad.Contracts.V1;
-
-public class Create : AbstractContract
+public class Create : AdContract
 {
     public Guid OwnerId { get; set; }
 }
