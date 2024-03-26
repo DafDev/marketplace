@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Contexts.User.Entities;
+using Marketplace.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -7,6 +8,10 @@ internal class UserProfileEntityTypeConfiguration : IEntityTypeConfiguration<Use
 {
     public void Configure(EntityTypeBuilder<UserProfile> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(profile => profile.UserId);
+        builder.Property(profile => profile.UserId)
+            .HasConversion(userid => userid.Value, dbId => new UserId(dbId));
+        builder.OwnsOne(profile => profile.FullName);
+        builder.OwnsOne(profile => profile.DisplayName);
     }
 }

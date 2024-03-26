@@ -11,7 +11,7 @@ public class UserProfile : AggregateRoot, IAggregateRoot
     public UserId UserId { get; private set; }
     public FullName FullName { get; private set; }
     public DisplayName DisplayName { get; private set; }
-    public string PhotoUrl { get; private set; }
+    public string? PhotoUrl { get; private set; } = string.Empty;
     public string AggregateId => "User_" + UserId.ToString();
     #endregion
 

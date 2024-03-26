@@ -5,7 +5,15 @@ internal static class RequestHandler
 
     public static async Task<IResult> Handle<T>(T request, Func<T, Task> handler)
     {
-        await handler(request);
-        return Results.Ok();
+		try
+		{
+			await handler(request);
+			return Results.Ok();
+
+		}
+		catch (Exception ex)
+		{
+			return Results.BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+		}
     }
 }
