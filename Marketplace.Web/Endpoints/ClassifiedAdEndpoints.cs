@@ -6,6 +6,8 @@ namespace Marketplace.Web.Endpoints;
 
 public class ClassifiedAdEndpoints : IEndpointDefinition
 {
+    private static readonly Serilog.ILogger Logger = Serilog.Log.ForContext<ClassifiedAdEndpoints>();
+
     public void DefineEndpoints(WebApplication app)
     {
         app.MapPost("/ad", CreateAd);
@@ -17,20 +19,20 @@ public class ClassifiedAdEndpoints : IEndpointDefinition
     }
 
     public async Task<IResult> CreateAd(Create command, IApplicationService<AdContract> classifiedAdsApplicationServices)
-        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle);
+        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle, Logger);
 
     public async Task<IResult> SetTitle(SetTitle command, IApplicationService<AdContract> classifiedAdsApplicationServices)
-        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle);
+        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle, Logger);
 
     public async Task<IResult> UpdateText(UpdateText command, IApplicationService<AdContract> classifiedAdsApplicationServices)
-        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle);
+        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle, Logger);
 
     public async Task<IResult> UpdatePrice(UpdatePrice command, IApplicationService<AdContract> classifiedAdsApplicationServices)
-        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle);
+        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle, Logger);
 
     public async Task<IResult> AddPicture(AddPicture command, IApplicationService<AdContract> classifiedAdsApplicationServices)
-        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle);
+        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle, Logger);
 
     public async Task<IResult> RequestToPublish(RequestToPublish command, IApplicationService<AdContract> classifiedAdsApplicationServices)
-        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle);
+        => await RequestHandler.Handle(command, classifiedAdsApplicationServices.Handle, Logger);
 }

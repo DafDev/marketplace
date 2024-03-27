@@ -5,6 +5,7 @@ namespace Marketplace.Web.Endpoints;
 
 public class UserProfileEndpoints : IEndpointDefinition
 {
+    private static readonly Serilog.ILogger Logger = Serilog.Log.ForContext<UserProfileEndpoints>();
     public void DefineEndpoints(WebApplication app)
     {
         app.MapPost("/user", RegisterUser);
@@ -20,7 +21,7 @@ public class UserProfileEndpoints : IEndpointDefinition
         => await RequestHandler.Handle(request, userApplicationService.Handle);
 
     public async Task<IResult> UpdateDispayName(UpdateUserDisplayName request, IApplicationService<UserContract> userApplicationService)
-        => await RequestHandler.Handle(request, userApplicationService.Handle);
+        => await RequestHandler.Handle(request, userApplicationService.Handle, Logger);
 
     public async Task<IResult> UpdateProfilePhoto(UpdateUserProfilePhoto request, IApplicationService<UserContract> userApplicationService)
         => await RequestHandler.Handle(request, userApplicationService.Handle);
