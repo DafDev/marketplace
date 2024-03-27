@@ -1,5 +1,5 @@
-﻿namespace Marketplace.Application.Contracts.V1;
-public class AddPicture : AbstractContract
+﻿namespace Marketplace.Application.Ad.Contracts.V1;
+public class AddPicture : AdContract
 {
     public int Height { get; set; }
     public int Width { get; set; }

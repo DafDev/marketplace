@@ -8,7 +8,7 @@ public static class AppBuilderDatabaseExtensions
 {
     public static void EnsureDatabase(this IServiceProvider services)
     {
-        var context = services.GetRequiredService<ClassifiedAdDbContext>() ?? throw new InvalidOperationException("service is not set yet");
+        var context = services.GetRequiredService<MarketplaceDbContext>() ?? throw new InvalidOperationException("service is not set yet");
         if (!context.Database.EnsureCreated())
             context.Database.Migrate();
     }

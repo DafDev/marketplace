@@ -1,7 +1,7 @@
 ﻿using Marketplace.Domain.Shared.DomainServices;
 using Marketplace.Domain.Shared.ValueObjects;
 
-namespace Marketplace.Application.Services.Ad;
+namespace Marketplace.Application.Shared.Services;
 public class FixedCurrencyLookup : ICurrencyLookup
 {
     private static readonly IEnumerable<CurrencyDetails> _currencies =

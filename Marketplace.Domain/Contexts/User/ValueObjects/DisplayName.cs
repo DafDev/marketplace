@@ -6,12 +6,12 @@ namespace Marketplace.Domain.Contexts.User.ValueObjects;
 [ComplexType]
 public record DisplayName(string Value)
 {
-    public static DisplayName FromString(string value, CheckTextForProfanity hasProfanity)
+    public static async Task<DisplayName> FromString(string value, IContentModeration hasProfanity)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentNullException(nameof(value));
        
-        if (hasProfanity(value))
+        if (await hasProfanity.CheckTextForProfanity(value))
             throw new ProfanityFoundException(value);
         
         return  new(value);

@@ -8,7 +8,7 @@ services:
     ports:
     - 5432:5432
     environment:
-      POSTGRES_DB: "Marketplace_EFCore"
+      POSTGRES_DB: "Marketplace_EFCore_New"
       POSTGRES_PASSWORD: "ultim"
     volumes:
     - ./init.sql:/docker-entrypoint-initdb.d/init.sql

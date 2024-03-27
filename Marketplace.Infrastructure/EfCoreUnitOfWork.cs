@@ -2,9 +2,9 @@
 using Marketplace.Infrastructure.Contexts;
 
 namespace Marketplace.Infrastructure;
-public class EfCoreUnitOfWork(ClassifiedAdDbContext dbContext) : IUnitOfWork
+public class EfCoreUnitOfWork(MarketplaceDbContext dbContext) : IUnitOfWork
 {
-    private readonly ClassifiedAdDbContext _dbContext = dbContext;
+    private readonly MarketplaceDbContext _dbContext = dbContext;
 
     public Task Commit() => _dbContext.SaveChangesAsync();
 }

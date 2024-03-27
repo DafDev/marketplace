@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Marketplace.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialRefactor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,19 +16,33 @@ namespace Marketplace.Infrastructure.Migrations
                 columns: table => new
                 {
                     ClassifiedAdId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title_Title = table.Column<string>(type: "text", nullable: true),
+                    Text_Value = table.Column<string>(type: "text", nullable: true),
+                    Price_Amount = table.Column<decimal>(type: "numeric", nullable: true),
+                    Price_Currency_CurrencyCode = table.Column<string>(type: "text", nullable: true),
+                    Price_Currency_InUse = table.Column<bool>(type: "boolean", nullable: true),
+                    Price_Currency_DecimalPlaces = table.Column<int>(type: "integer", nullable: true),
+                    ApprovedBy_Value = table.Column<Guid>(type: "uuid", nullable: true),
                     State = table.Column<int>(type: "integer", nullable: false),
-                    ApprovedBy_Value = table.Column<Guid>(type: "uuid", nullable: false),
-                    OwnerId_Value = table.Column<Guid>(type: "uuid", nullable: false),
-                    Price_Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    Price_Currency_CurrencyCode = table.Column<string>(type: "text", nullable: false),
-                    Price_Currency_DecimalPlaces = table.Column<int>(type: "integer", nullable: false),
-                    Price_Currency_InUse = table.Column<bool>(type: "boolean", nullable: false),
-                    Text_Value = table.Column<string>(type: "text", nullable: false),
-                    Title_Title = table.Column<string>(type: "text", nullable: false)
+                    OwnerId_Value = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClassifiedAds", x => x.ClassifiedAdId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProfiles",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FullName_Value = table.Column<string>(type: "text", nullable: false),
+                    DisplayName_Value = table.Column<string>(type: "text", nullable: false),
+                    PhotoUrl = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProfiles", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,6 +78,9 @@ namespace Marketplace.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Pictures");
+
+            migrationBuilder.DropTable(
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
                 name: "ClassifiedAds");

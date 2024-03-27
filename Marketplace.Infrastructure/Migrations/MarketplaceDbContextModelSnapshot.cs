@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Marketplace.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,12 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Marketplace.Infrastructure.Migrations
 {
-    [DbContext(typeof(ClassifiedAdDbContext))]
-    [Migration("20240321211348_ApprovedByIsOptional")]
-    partial class ApprovedByIsOptional
+    [DbContext(typeof(MarketplaceDbContext))]
+    partial class MarketplaceDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,6 +77,19 @@ namespace Marketplace.Infrastructure.Migrations
                     b.ToTable("Pictures");
                 });
 
+            modelBuilder.Entity("Marketplace.Domain.Contexts.User.Entities.UserProfile", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserProfiles");
+                });
+
             modelBuilder.Entity("Marketplace.Domain.Contexts.Ad.Entities.ClassifiedAd", b =>
                 {
                     b.OwnsOne("Marketplace.Domain.Contexts.Ad.ValueObjects.ClassifiedAdText", "Text", b1 =>
@@ -116,7 +126,7 @@ namespace Marketplace.Infrastructure.Migrations
                                 .HasForeignKey("ClassifiedAdId");
                         });
 
-                    b.OwnsOne("Marketplace.Domain.Contexts.Ad.ValueObjects.Money", "Price", b1 =>
+                    b.OwnsOne("Marketplace.Domain.Shared.ValueObjects.Money", "Price", b1 =>
                         {
                             b1.Property<Guid>("ClassifiedAdId")
                                 .HasColumnType("uuid");
@@ -131,7 +141,7 @@ namespace Marketplace.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("ClassifiedAdId");
 
-                            b1.OwnsOne("Marketplace.Domain.Contexts.Ad.ValueObjects.CurrencyDetails", "Currency", b2 =>
+                            b1.OwnsOne("Marketplace.Domain.Shared.ValueObjects.CurrencyDetails", "Currency", b2 =>
                                 {
                                     b2.Property<Guid>("MoneyClassifiedAdId")
                                         .HasColumnType("uuid");
@@ -158,7 +168,7 @@ namespace Marketplace.Infrastructure.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("Marketplace.Domain.Contexts.Ad.ValueObjects.UserId", "ApprovedBy", b1 =>
+                    b.OwnsOne("Marketplace.Domain.Shared.ValueObjects.UserId", "ApprovedBy", b1 =>
                         {
                             b1.Property<Guid>("ClassifiedAdId")
                                 .HasColumnType("uuid");
@@ -189,6 +199,49 @@ namespace Marketplace.Infrastructure.Migrations
                         .WithMany("Pictures")
                         .HasForeignKey("ClassifiedAdId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Marketplace.Domain.Contexts.User.Entities.UserProfile", b =>
+                {
+                    b.OwnsOne("Marketplace.Domain.Contexts.User.ValueObjects.DisplayName", "DisplayName", b1 =>
+                        {
+                            b1.Property<Guid>("UserProfileUserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("UserProfileUserId");
+
+                            b1.ToTable("UserProfiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserProfileUserId");
+                        });
+
+                    b.OwnsOne("Marketplace.Domain.Contexts.User.ValueObjects.FullName", "FullName", b1 =>
+                        {
+                            b1.Property<Guid>("UserProfileUserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("UserProfileUserId");
+
+                            b1.ToTable("UserProfiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserProfileUserId");
+                        });
+
+                    b.Navigation("DisplayName")
+                        .IsRequired();
+
+                    b.Navigation("FullName")
                         .IsRequired();
                 });
 
