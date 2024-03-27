@@ -15,14 +15,14 @@ public class UserProfileEndpoints : IEndpointDefinition
     }
 
     public async Task<IResult> RegisterUser(RegisterUser request, IApplicationService<UserContract> userApplicationService)
-        => await RequestHandler.Handle(request, userApplicationService.Handle);
+        => await RequestHandler.Handle(request, userApplicationService.Handle, Logger);
 
     public async Task<IResult> UpdateFullName(UpdateUserFullName request, IApplicationService<UserContract> userApplicationService)
-        => await RequestHandler.Handle(request, userApplicationService.Handle);
+        => await RequestHandler.Handle(request, userApplicationService.Handle, Logger);
 
     public async Task<IResult> UpdateDispayName(UpdateUserDisplayName request, IApplicationService<UserContract> userApplicationService)
         => await RequestHandler.Handle(request, userApplicationService.Handle, Logger);
 
     public async Task<IResult> UpdateProfilePhoto(UpdateUserProfilePhoto request, IApplicationService<UserContract> userApplicationService)
-        => await RequestHandler.Handle(request, userApplicationService.Handle);
+        => await RequestHandler.Handle(request, userApplicationService.Handle, Logger);
 }
